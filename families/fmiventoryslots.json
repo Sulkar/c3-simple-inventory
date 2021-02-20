@@ -1,0 +1,24 @@
+{
+	"name": "fmIventorySlots",
+	"plugin-id": "Sprite",
+	"sid": 663657214044529,
+	"instanceVariables": [
+		{
+			"name": "iventorySlot",
+			"type": "number",
+			"desc": "",
+			"sid": 114422877874151
+		},
+		{
+			"name": "txtItemCountUID",
+			"type": "number",
+			"desc": "",
+			"sid": 272371429150232
+		}
+	],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"members": [
+		"itemsInventory"
+	]
+}

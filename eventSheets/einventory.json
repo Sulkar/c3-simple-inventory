@@ -1,0 +1,865 @@
+{
+	"name": "eInventory",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "playerTileX",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 870521732337623
+		},
+		{
+			"eventType": "variable",
+			"name": "playerTileY",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 390158062759173
+		},
+		{
+			"eventType": "variable",
+			"name": "tileWidth",
+			"type": "number",
+			"initialValue": "32",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 816276840094940
+		},
+		{
+			"eventType": "variable",
+			"name": "playerDirection",
+			"type": "string",
+			"initialValue": "right",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 788579412554909
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Start",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-start-of-layout",
+							"objectClass": "System",
+							"sid": 775815850319434
+						}
+					],
+					"actions": [
+						{
+							"id": "request-project-file",
+							"objectClass": "AJAX",
+							"sid": 735220954931537,
+							"parameters": {
+								"tag": "\"arItems\"",
+								"file": "arItems.json"
+							}
+						}
+					],
+					"sid": 948862639350155
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-completed",
+							"objectClass": "AJAX",
+							"sid": 908782092864200,
+							"parameters": {
+								"tag": "\"arItems\""
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "load",
+							"objectClass": "arItems",
+							"sid": 818483484270216,
+							"parameters": {
+								"json": "AJAX.LastData"
+							}
+						}
+					],
+					"sid": 216895828863799
+				}
+			],
+			"sid": 331496226269803
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Player",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "comment",
+					"text": "Item Pickup"
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-overlapping-another-object",
+							"objectClass": "fmPlayers",
+							"sid": 860221368902133,
+							"parameters": {
+								"object": "fmItems"
+							}
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "pickupItem",
+							"sid": 930819330415465,
+							"parameters": [
+								"fmItems.UID"
+							]
+						}
+					],
+					"sid": 581712001935663
+				},
+				{
+					"eventType": "comment",
+					"text": "Inventory Usage"
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-key-released",
+							"objectClass": "Keyboard",
+							"sid": 952275760108774,
+							"parameters": {
+								"key": 48
+							}
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "placeItemOnGround",
+							"sid": 342501198679345,
+							"parameters": [
+								"0"
+							]
+						}
+					],
+					"sid": 797834825231972
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-key-released",
+							"objectClass": "Keyboard",
+							"sid": 795205984203572,
+							"parameters": {
+								"key": 49
+							}
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "placeItemOnGround",
+							"sid": 479005384751320,
+							"parameters": [
+								"1"
+							]
+						}
+					],
+					"sid": 681593141636469
+				},
+				{
+					"eventType": "comment",
+					"text": "Player Movement"
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-moving",
+							"objectClass": "fmPlayers",
+							"sid": 189479711795162,
+							"behaviorType": "TileMovement"
+						}
+					],
+					"actions": [
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 711508714789129,
+							"parameters": {
+								"variable": "playerTileX",
+								"value": "fmPlayers.TileMovement.TargetX"
+							}
+						},
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 971532184767495,
+							"parameters": {
+								"variable": "playerTileY",
+								"value": "fmPlayers.TileMovement.TargetY"
+							}
+						}
+					],
+					"sid": 618413180893511
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-moving-direction",
+							"objectClass": "fmPlayers",
+							"sid": 386858160140290,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "right"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 287070276032482,
+							"parameters": {
+								"variable": "playerDirection",
+								"value": "\"Right\""
+							}
+						}
+					],
+					"sid": 189785883612876
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-moving-direction",
+							"objectClass": "fmPlayers",
+							"sid": 533760932229524,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "left"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 322480355777726,
+							"parameters": {
+								"variable": "playerDirection",
+								"value": "\"Left\""
+							}
+						}
+					],
+					"sid": 397045564588335
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-moving-direction",
+							"objectClass": "fmPlayers",
+							"sid": 765535977937099,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "up"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 544333278526290,
+							"parameters": {
+								"variable": "playerDirection",
+								"value": "\"Up\""
+							}
+						}
+					],
+					"sid": 254067212528940
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-moving-direction",
+							"objectClass": "fmPlayers",
+							"sid": 534107100208534,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "down"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-eventvar-value",
+							"objectClass": "System",
+							"sid": 795601687223086,
+							"parameters": {
+								"variable": "playerDirection",
+								"value": "\"Down\""
+							}
+						}
+					],
+					"sid": 334800261568947
+				}
+			],
+			"sid": 925920494584879
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Item functions",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"functionName": "pickupItem",
+					"functionDescription": "",
+					"functionCategory": "",
+					"functionReturnType": "none",
+					"functionIsAsync": false,
+					"functionParameters": [
+						{
+							"name": "itemUID",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"sid": 743469905396549
+						}
+					],
+					"eventType": "function-block",
+					"conditions": [],
+					"actions": [],
+					"sid": 566398855796040,
+					"children": [
+						{
+							"eventType": "variable",
+							"name": "curItemID",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"isStatic": false,
+							"isConstant": false,
+							"sid": 999996189577524
+						},
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "pick-by-unique-id",
+									"objectClass": "fmItems",
+									"sid": 535647300213119,
+									"parameters": {
+										"unique-id": "itemUID"
+									}
+								}
+							],
+							"actions": [
+								{
+									"id": "set-eventvar-value",
+									"objectClass": "System",
+									"sid": 553599793725186,
+									"parameters": {
+										"variable": "curItemID",
+										"value": "fmItems.AnimationFrame"
+									}
+								},
+								{
+									"callFunction": "setItemToInventory",
+									"sid": 177194334864258,
+									"parameters": [
+										"curItemID",
+										"fmItems.UID"
+									]
+								}
+							],
+							"sid": 125747466979284
+						}
+					]
+				},
+				{
+					"functionName": "setItemToInventory",
+					"functionDescription": "",
+					"functionCategory": "",
+					"functionReturnType": "none",
+					"functionIsAsync": false,
+					"functionParameters": [
+						{
+							"name": "pickedUpItemID",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"sid": 105956070444214
+						},
+						{
+							"name": "pickedUpItemUID",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"sid": 314061763451207
+						}
+					],
+					"eventType": "function-block",
+					"conditions": [],
+					"actions": [],
+					"sid": 247779390815079,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "for-each",
+									"objectClass": "System",
+									"sid": 482283439774978,
+									"parameters": {
+										"object": "fmIventorySlots"
+									}
+								}
+							],
+							"actions": [],
+							"sid": 681080671986497,
+							"children": [
+								{
+									"eventType": "block",
+									"conditions": [
+										{
+											"id": "compare-animation-frame",
+											"objectClass": "fmIventorySlots",
+											"sid": 523669228874140,
+											"parameters": {
+												"comparison": 0,
+												"number": "0"
+											}
+										},
+										{
+											"id": "compare-animation-frame",
+											"objectClass": "fmIventorySlots",
+											"sid": 282588148220652,
+											"parameters": {
+												"comparison": 0,
+												"number": "pickedUpItemID"
+											}
+										}
+									],
+									"actions": [
+										{
+											"id": "set-animation-frame",
+											"objectClass": "fmIventorySlots",
+											"sid": 213032796231376,
+											"parameters": {
+												"frame-number": "pickedUpItemID"
+											}
+										},
+										{
+											"id": "set-at-xy",
+											"objectClass": "arInventory",
+											"sid": 773215666336798,
+											"parameters": {
+												"x": "fmIventorySlots.iventorySlot",
+												"y": "0",
+												"value": "pickedUpItemID"
+											}
+										},
+										{
+											"id": "set-at-xy",
+											"objectClass": "arInventory",
+											"sid": 821500867180319,
+											"parameters": {
+												"x": "fmIventorySlots.iventorySlot",
+												"y": "1",
+												"value": "arInventory.At(fmIventorySlots.iventorySlot,1)+1"
+											}
+										},
+										{
+											"callFunction": "updateItemCount",
+											"sid": 411719713451487,
+											"parameters": [
+												"fmIventorySlots.UID"
+											]
+										},
+										{
+											"id": "stop-loop",
+											"objectClass": "System",
+											"sid": 202972331752612
+										}
+									],
+									"sid": 255324006909412,
+									"children": [
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "pick-by-unique-id",
+													"objectClass": "fmItems",
+													"sid": 744781872029504,
+													"parameters": {
+														"unique-id": "pickedUpItemUID"
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "destroy",
+													"objectClass": "fmItems",
+													"sid": 114666353417199
+												}
+											],
+											"sid": 781024630631306
+										}
+									],
+									"isOrBlock": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"functionName": "placeItemOnGround",
+					"functionDescription": "",
+					"functionCategory": "",
+					"functionReturnType": "none",
+					"functionIsAsync": false,
+					"functionParameters": [
+						{
+							"name": "activeInventorySlot",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"sid": 558232176187772
+						}
+					],
+					"eventType": "function-block",
+					"conditions": [],
+					"actions": [],
+					"sid": 801159556301198,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "compare-instance-variable",
+									"objectClass": "fmIventorySlots",
+									"sid": 356459501253684,
+									"parameters": {
+										"instance-variable": "iventorySlot",
+										"comparison": 0,
+										"value": "activeInventorySlot"
+									}
+								}
+							],
+							"actions": [],
+							"sid": 983334951905458,
+							"children": [
+								{
+									"eventType": "block",
+									"conditions": [
+										{
+											"id": "compare-animation-frame",
+											"objectClass": "fmIventorySlots",
+											"sid": 208897183912179,
+											"parameters": {
+												"comparison": 1,
+												"number": "0"
+											}
+										},
+										{
+											"id": "compare-at-xy",
+											"objectClass": "arInventory",
+											"sid": 742394592264657,
+											"parameters": {
+												"x": "fmIventorySlots.iventorySlot",
+												"y": "1",
+												"comparison": 4,
+												"value": "0"
+											}
+										}
+									],
+									"actions": [
+										{
+											"id": "create-object",
+											"objectClass": "System",
+											"sid": 763463777623118,
+											"parameters": {
+												"object-to-create": "fmItems",
+												"layer": "0",
+												"x": "0",
+												"y": "0"
+											}
+										},
+										{
+											"id": "set-animation-frame",
+											"objectClass": "fmItems",
+											"sid": 701918114109500,
+											"parameters": {
+												"frame-number": "fmIventorySlots.AnimationFrame"
+											}
+										},
+										{
+											"id": "set-at-xy",
+											"objectClass": "arInventory",
+											"sid": 161271004678533,
+											"parameters": {
+												"x": "fmIventorySlots.iventorySlot",
+												"y": "1",
+												"value": "arInventory.At(fmIventorySlots.iventorySlot,1)-1"
+											}
+										},
+										{
+											"callFunction": "updateItemCount",
+											"sid": 311574763983019,
+											"parameters": [
+												"fmIventorySlots.UID"
+											]
+										}
+									],
+									"sid": 613196588112323,
+									"children": [
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "compare-eventvar",
+													"objectClass": "System",
+													"sid": 252946291088089,
+													"parameters": {
+														"variable": "playerDirection",
+														"comparison": 0,
+														"value": "\"Right\""
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "set-position",
+													"objectClass": "fmItems",
+													"sid": 493686187664372,
+													"parameters": {
+														"x": "playerTileX+tileWidth",
+														"y": "playerTileY"
+													}
+												}
+											],
+											"sid": 787666831852514
+										},
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "compare-eventvar",
+													"objectClass": "System",
+													"sid": 755682270903235,
+													"parameters": {
+														"variable": "playerDirection",
+														"comparison": 0,
+														"value": "\"Left\""
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "set-position",
+													"objectClass": "fmItems",
+													"sid": 921075674528305,
+													"parameters": {
+														"x": "playerTileX-tileWidth",
+														"y": "playerTileY"
+													}
+												}
+											],
+											"sid": 783756811370792
+										},
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "compare-eventvar",
+													"objectClass": "System",
+													"sid": 901293750488162,
+													"parameters": {
+														"variable": "playerDirection",
+														"comparison": 0,
+														"value": "\"Up\""
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "set-position",
+													"objectClass": "fmItems",
+													"sid": 888925358961774,
+													"parameters": {
+														"x": "playerTileX",
+														"y": "playerTileY-tileWidth"
+													}
+												}
+											],
+											"sid": 368413926933090
+										},
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "compare-eventvar",
+													"objectClass": "System",
+													"sid": 392438421783821,
+													"parameters": {
+														"variable": "playerDirection",
+														"comparison": 0,
+														"value": "\"Down\""
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "set-position",
+													"objectClass": "fmItems",
+													"sid": 597104832977653,
+													"parameters": {
+														"x": "playerTileX",
+														"y": "playerTileY+tileWidth"
+													}
+												}
+											],
+											"sid": 379167013173403
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"functionName": "updateItemCount",
+					"functionDescription": "",
+					"functionCategory": "",
+					"functionReturnType": "none",
+					"functionIsAsync": false,
+					"functionParameters": [
+						{
+							"name": "inventorySlotUID",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"sid": 258433480423459
+						}
+					],
+					"eventType": "function-block",
+					"conditions": [],
+					"actions": [],
+					"sid": 947031332113021,
+					"children": [
+						{
+							"eventType": "variable",
+							"name": "curItemCount",
+							"type": "number",
+							"initialValue": "0",
+							"comment": "",
+							"isStatic": false,
+							"isConstant": false,
+							"sid": 160019644906090
+						},
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "pick-by-unique-id",
+									"objectClass": "fmIventorySlots",
+									"sid": 930200798506513,
+									"parameters": {
+										"unique-id": "inventorySlotUID"
+									}
+								}
+							],
+							"actions": [],
+							"sid": 512404193064106,
+							"children": [
+								{
+									"eventType": "block",
+									"conditions": [
+										{
+											"id": "pick-by-unique-id",
+											"objectClass": "txtItemCount",
+											"sid": 966418401165829,
+											"parameters": {
+												"unique-id": "fmIventorySlots.txtItemCountUID"
+											}
+										}
+									],
+									"actions": [
+										{
+											"id": "set-eventvar-value",
+											"objectClass": "System",
+											"sid": 609987135364765,
+											"parameters": {
+												"variable": "curItemCount",
+												"value": "arInventory.At(fmIventorySlots.iventorySlot,1)"
+											}
+										},
+										{
+											"id": "set-text",
+											"objectClass": "txtItemCount",
+											"sid": 307497235359347,
+											"parameters": {
+												"text": "curItemCount"
+											}
+										}
+									],
+									"sid": 106741725030009,
+									"children": [
+										{
+											"eventType": "block",
+											"conditions": [
+												{
+													"id": "compare-eventvar",
+													"objectClass": "System",
+													"sid": 897970376326255,
+													"parameters": {
+														"variable": "curItemCount",
+														"comparison": 0,
+														"value": "0"
+													}
+												}
+											],
+											"actions": [
+												{
+													"id": "set-animation-frame",
+													"objectClass": "fmIventorySlots",
+													"sid": 968680861401667,
+													"parameters": {
+														"frame-number": "0"
+													}
+												}
+											],
+											"sid": 752700093192619
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			"sid": 812136365654071
+		}
+	],
+	"sid": 346708889413875
+}

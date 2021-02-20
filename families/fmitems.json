@@ -1,0 +1,18 @@
+{
+	"name": "fmItems",
+	"plugin-id": "Sprite",
+	"sid": 349942583912244,
+	"instanceVariables": [
+		{
+			"name": "iventoryItem",
+			"type": "boolean",
+			"desc": "",
+			"sid": 384581963989335
+		}
+	],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"members": [
+		"items"
+	]
+}

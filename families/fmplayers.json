@@ -1,0 +1,17 @@
+{
+	"name": "fmPlayers",
+	"plugin-id": "Sprite",
+	"sid": 932848745287245,
+	"instanceVariables": [],
+	"behaviorTypes": [
+		{
+			"behaviorId": "TileMovement",
+			"name": "TileMovement",
+			"sid": 881266644203473
+		}
+	],
+	"effectTypes": [],
+	"members": [
+		"player"
+	]
+}
